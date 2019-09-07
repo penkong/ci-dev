@@ -1,0 +1,22 @@
+{
+  "domainA":{
+    "prefix":"dbo",
+    "cn":{
+        "dbName":"db-test",
+        "user":"sa",
+        "password":"123",
+        "host":"192.168.100.170/sql2014"
+    },
+    "providerType":"mssql"
+  },
+ "domainB":{
+    "prefix":"safa_ci",
+    "cn":{
+        "dbName":"NGO_iran",
+        "user":"sa",
+        "password":"1",
+        "host":"192.168.100.188"
+    },
+    "providerType":"postgr"
+  }
+}

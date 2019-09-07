@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 // ------------- Postgresql connection ----------------
 const dbPg = require('./config/db/db-postgresql');
-// TEST Postresql connection
+// // TEST Postresql connection
 dbPg.authenticate()
     .then(() => console.log('connected to postgres ...'))
     .catch(err => console.log(err));

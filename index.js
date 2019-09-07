@@ -6,6 +6,8 @@ const express = require('express');
 
 // ------------- Postgresql connection ----------------
 const dbPg = require('./config/db/db-postgresql');
+
+// TEST Postresql connection
 dbPg.authenticate()
     .then(() => console.log('connected to postgres ...'))
     .catch(err => console.log(err));
@@ -28,8 +30,14 @@ app.use(bodyParser.urlencoded({
 
 
 // ------------------- Routes ------------------
-app.get('/', (req, res) => res.send('index'));
-
+// landing route
+app.get('/', (req, res) => res.send('index from landing page'));
+// ci postgresql route
+require('./routes/ciPostgresql')(app);
+// ci sql route
+require('./routes/ciSql')(app);
+// ci sql route
+require('./routes/ciMongo')(app);
 
 
 

@@ -14,7 +14,7 @@ dbPg.authenticate()
 
 // ------------- sql connection ----------------
 const dbSql = require('./config/db/db-sql-Test');
-// // TEST Postresql connection
+// // TEST SQL connection
 dbSql.authenticate()
     .then(() => console.log('connected to sql ...'))
     .catch(err => console.log(err));
@@ -25,7 +25,7 @@ const app = express();
 
 
 //------------------ middleware -------------------
-// Body Parser = for form to get data from
+// Body Parser = for form, to get data from
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
@@ -39,6 +39,7 @@ app.get('/', (req, res) => res.send('index from landing page'));
 require('./routes/ci')(app);
 require('./routes/ci-add')(app);
 require('./routes/ci-del')(app);
+require('./routes/ci-listAllCi')(app);
 
 
 // ---------------- Listen and exec -------------

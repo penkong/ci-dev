@@ -1,17 +1,18 @@
-//
+// sample 
+// {
+//     "domainName": "water"
+// }
+
 const config = require('config');
 const dbFunc = require('../config/db/db-func');
 
 module.exports = app => {
 
-    // get a ci rows
+    // get all ci list
 
-    app.post('/ci-get', (req, res) => {
+    app.post('/ci-get-all', (req, res) => {
         // get info from route
-        const {
-            domainName,
-            ciName
-        } = req.body;
+        const { domainName } = req.body;
 
         // check for domain exist and draw out info
         if (!config.has(`${domainName}`)) return;
@@ -32,17 +33,20 @@ module.exports = app => {
 
         // exec logic
         try {
-            db.query(`SELECT * FROM ${prefix}.${ciName}`)
+            db.query(`SELECT "table_name" FROM ${prefix}.GetCi`)
                 .then(response => {
-                    res.send(response[0]);
+                    console.log(response);
+                    let arr = [];
+                    for (let el of response[0]) {
+                        arr.push(el["table_name"]);
+                    }
+                    res.send(arr);
                 })
-
         }
         // error handler
         catch (error) {
             console.log(error);
-            res.status(404).send('please use correct info')
-
+            res.status(404).send('please use correct info');
         }
     })
 }

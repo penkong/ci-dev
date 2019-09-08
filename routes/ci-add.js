@@ -50,8 +50,7 @@ module.exports = app => {
             // if id is acceptable add to db.
             db
                 .query(
-                    `INSERT INTO ${prefix}.${ciName} 
-                  ("id", "title") VALUES ('${id}', '${title}')`
+                    `INSERT INTO ${prefix}.${ciName} ("id", "title") VALUES ('${id}', '${title}')`
                 )
                 .then(response => {
                     res.send([{ id, title }]);

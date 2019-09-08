@@ -28,7 +28,6 @@ module.exports = app => {
         if (!config.has(`${domainName}`))
             return res.status(404).send('Wrong Input');
 
-
         // check domain exist
         const domain = config.get(`${domainName}`);
         const {
@@ -57,7 +56,6 @@ module.exports = app => {
                 .then(response => {
                     res.send([{ id, title }]);
                 });
-
         }
         // error handler
         catch (error) {

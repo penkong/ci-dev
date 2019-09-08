@@ -5,7 +5,7 @@ const express = require('express');
 
 
 // ------------- Postgresql connection ----------------
-const dbPg = require('./config/db/db-postgresqlTest');
+const dbPg = require('./config/db/db-postgresql-Test');
 // // TEST Postresql connection
 dbPg.authenticate()
     .then(() => console.log('connected to postgres ...'))
@@ -13,7 +13,7 @@ dbPg.authenticate()
 
 
 // ------------- sql connection ----------------
-const dbSql = require('./config/db/db-sqlTest');
+const dbSql = require('./config/db/db-sql-Test');
 // // TEST Postresql connection
 dbSql.authenticate()
     .then(() => console.log('connected to sql ...'))
@@ -38,7 +38,7 @@ app.get('/', (req, res) => res.send('index from landing page'));
 // ci-routes
 require('./routes/ci')(app);
 require('./routes/ci-add')(app);
-// require('./routes/ci-del')(app);
+require('./routes/ci-del')(app);
 
 
 // ---------------- Listen and exec -------------

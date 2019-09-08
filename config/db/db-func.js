@@ -1,4 +1,8 @@
-//
+// postman request sample.
+//      { 
+//          "domainName":	"domain1",
+//          "ciName":"ci_ac_input"
+//      }
 const Sequelize = require('sequelize');
 
 module.exports = (dbName, user, password, host, providerType) => {

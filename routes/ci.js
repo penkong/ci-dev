@@ -2,11 +2,6 @@
 const Sequelize = require('sequelize');
 const config = require('config');
 const dbFunc = require('../config/db/db-func');
-//      { 
-//          "domainName":	"domain1",
-//          "ciName":"ci_ac_input"
-//      }
-
 
 module.exports = app => {
 
@@ -23,6 +18,7 @@ module.exports = app => {
         db.query(`SELECT * FROM ${prefix}.${ciName}`)
             .then(res => console.log(res))
             .catch(err => console.log(err.message))
-        res.send('ok');
+        const result =
+            res.send('ok');
     })
 }

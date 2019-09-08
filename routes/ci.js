@@ -15,10 +15,14 @@ module.exports = app => {
             providerType
         } = domain;
         const db = dbFunc(dbName, user, password, host, providerType)
-        db.query(`SELECT * FROM ${prefix}.${ciName}`)
-            .then(res => console.log(res))
-            .catch(err => console.log(err.message))
-        const result =
-            res.send('ok');
+        try {
+            db.query(`SELECT * FROM ${prefix}.${ciName}`)
+                .then(response => {
+                    res.send(response[0]);
+                })
+
+        } catch (error) {
+            console.log(error);
+        }
     })
 }

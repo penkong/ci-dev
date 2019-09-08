@@ -2,10 +2,10 @@
     "gas": {
         "prefix": "dbo",
         "cn": {
-            "dbName": "db-test",
+            "dbName": "DbEstate",
             "user": "sa",
-            "password": "123",
-            "host": "192.168.100.170/sql2014"
+            "password": "1",
+            "host": "192.168.100.188"
         },
         "providerType": "mssql"
     },

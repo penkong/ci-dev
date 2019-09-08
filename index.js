@@ -3,10 +3,16 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const express = require('express');
 // ------------- Postgresql connection ----------------
-const dbPg = require('./config/db/db-postgresql');
+const dbPg = require('./config/db/db-postgresqlTest');
 // // TEST Postresql connection
 dbPg.authenticate()
     .then(() => console.log('connected to postgres ...'))
+    .catch(err => console.log(err));
+// ------------- sql connection ----------------
+const dbSql = require('./config/db/db-sqlTest');
+// // TEST Postresql connection
+dbSql.authenticate()
+    .then(() => console.log('connected to sql ...'))
     .catch(err => console.log(err));
 // ------------------ App Initialize ----------------
 const app = express();

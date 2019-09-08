@@ -25,7 +25,8 @@
         "mysql2": "^1.7.0",
         "pg": "^7.12.1",
         "pg-hstore": "^2.3.3",
-        "sequelize": "^5.18.1"
+        "sequelize": "^5.18.1",
+        "tedious": "^6.3.0"
     },
     "devDependencies": {
         "nodemon": "^1.19.2"

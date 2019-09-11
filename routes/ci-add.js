@@ -5,10 +5,8 @@
 //   "domainName": "water",
 //   "ciName": "ci_ac_input"
 // }
-
-const config = require('config');
+const getConfig = require('../services/getConfig');
 const dbFunc = require('../config/db/db-func');
-
 module.exports = app => {
 
     // add row to table
@@ -20,27 +18,18 @@ module.exports = app => {
             domainName,
             ciName
         } = req.body;
-
         // edge case handle
         if (typeof id !== 'number' || typeof title !== 'string')
             return res.status(404).send('please correct your data input!');
-        if (!config.has(`${domainName}`))
-            return res.status(404).send('Wrong Input');
-
         // check domain exist
-        const domain = config.get(`${domainName}`);
         const {
             prefix,
-            cn: {
-                dbName,
-                user,
-                password,
-                host
-            },
+            dbName,
+            user,
+            password,
+            host,
             providerType
-        } = domain;
-
-
+        } = getConfig(domainName);
         // exec logic
         try {
             // connect related db base on domain name
@@ -49,9 +38,7 @@ module.exports = app => {
             const response = await db
                 .query(`INSERT INTO ${prefix}.${ciName} ("id", "title") VALUES ('${id}', '${title}')`);
             response ? res.send([{ id, title }]) : 'something wrong';
-        }
-        // error handler
-        catch (error) {
+        } catch (error) {
             console.log(error);
             res.status(404).send('please use correct info')
         };

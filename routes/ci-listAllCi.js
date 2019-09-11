@@ -2,8 +2,7 @@
 // {
 //     "domainName": "water"
 // }
-
-const config = require('config');
+const getConfig = require('../services/getConfig');
 const dbFunc = require('../config/db/db-func');
 
 module.exports = app => {
@@ -12,22 +11,14 @@ module.exports = app => {
     app.post('/ci-get-all', async(req, res) => {
         // get info from route
         const { domainName } = req.body;
-
-        // check for domain exist and draw out info
-        if (!config.has(`${domainName}`)) return;
-        const domain = config.get(`${domainName}`);
-
         const {
             prefix,
-            cn: {
-                dbName,
-                user,
-                password,
-                host
-            },
+            dbName,
+            user,
+            password,
+            host,
             providerType
-        } = domain;
-
+        } = getConfig(domainName);
         // exec logic
         try {
             // connect related db base on domain name

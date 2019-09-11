@@ -6,7 +6,8 @@
 //   "ciName": "ci_ac_input"
 // }
 const getConfig = require('../services/getConfig');
-const dbFunc = require('../config/db/db-func');
+const dbFunc = require('../db/db-func');
+
 module.exports = app => {
 
     // add row to table

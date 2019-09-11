@@ -1,7 +1,7 @@
 //
-const getConfig = require('../services/getConfig');
 
-const dbFunc = require('../config/db/db-func');
+const getConfig = require('../services/getConfig');
+const dbFunc = require('../db/db-func');
 const redisClient = require('../services/redisClient');
 module.exports = app => {
 
@@ -25,16 +25,15 @@ module.exports = app => {
             // connect related db base on domain name
             const db = await dbFunc(dbName, user, password, host, providerType);
             const keyForRedis = JSON.stringify({
-                prefix: prefix,
                 user: user,
-                dbName: dbName,
                 ciName: ciName,
+                domainName: domainName,
                 providerType: providerType
             });
             const cachedVal = await redisClient.get(keyForRedis);
             if (cachedVal) return res.send(JSON.parse(cachedVal));
             const response = await db.query(`SELECT * FROM ${prefix}.${ciName}`);
-            redisClient.setex(keyForRedis, 20, JSON.stringify(response[0]));
+            redisClient.setex(keyForRedis, 30, JSON.stringify(response[0]));
             res.send(response[0]);
         }
         // error handler

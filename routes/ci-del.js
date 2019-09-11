@@ -11,8 +11,7 @@ const dbFunc = require('../config/db/db-func');
 module.exports = app => {
 
     // delete row from table
-
-    app.post('/ci-del', (req, res) => {
+    app.post('/ci-del', async(req, res) => {
         // get info from route
         const {
             id,
@@ -39,20 +38,13 @@ module.exports = app => {
             providerType
         } = domain;
 
-        // connect related db base on domain name
-        const db = dbFunc(dbName, user, password, host, providerType);
-
         // exec logic
         try {
-            // check for id
+            // connect related db base on domain name
+            const db = await dbFunc(dbName, user, password, host, providerType);
             // if id is acceptable add to db.
-            db
-                .query(
-                    `DELETE FROM ${prefix}.${ciName} WHERE "id" = '${id}'`
-                )
-                .then(response => {
-                    res.send(`Success.id ${id} deleted.`);
-                });
+            const response = await db.query(`DELETE FROM ${prefix}.${ciName} WHERE "id" = '${id}'`);
+            response ? res.send(`Success.id ${id} deleted.`) : 'something wrong';
         }
         // error handler
         catch (error) {

@@ -9,14 +9,14 @@ const dbFunc = require('../config/db/db-func');
 module.exports = app => {
 
     // get all ci list
-
-    app.post('/ci-get-all', (req, res) => {
+    app.post('/ci-get-all', async(req, res) => {
         // get info from route
         const { domainName } = req.body;
 
         // check for domain exist and draw out info
         if (!config.has(`${domainName}`)) return;
         const domain = config.get(`${domainName}`);
+
         const {
             prefix,
             cn: {
@@ -28,20 +28,19 @@ module.exports = app => {
             providerType
         } = domain;
 
-        // connect related db base on domain name
-        const db = dbFunc(dbName, user, password, host, providerType);
-
         // exec logic
         try {
-            db.query(`SELECT "table_name" FROM ${prefix}.GetCi`)
-                .then(response => {
-                    console.log(response);
-                    let arr = [];
-                    for (let el of response[0]) {
-                        arr.push(el["table_name"]);
-                    }
-                    res.send(arr);
-                })
+            // connect related db base on domain name
+            const db = await dbFunc(dbName, user, password, host, providerType);
+            let arr = [];
+            const response = await db.query(`SELECT "table_name" FROM ${prefix}.GetCi`);
+            const mapResult = response => {
+                for (let el of response[0]) {
+                    arr.push(el["table_name"]);
+                }
+                return arr;
+            }
+            res.send(mapResult(response));
         }
         // error handler
         catch (error) {

@@ -4,9 +4,8 @@ const dbFunc = require('../config/db/db-func');
 
 module.exports = app => {
 
-    // get a ci rows
-
-    app.post('/ci-get', (req, res) => {
+    // get a ci table
+    app.post('/ci-get', async(req, res) => {
         // get info from route
         const {
             domainName,
@@ -27,16 +26,12 @@ module.exports = app => {
             providerType
         } = domain;
 
-        // connect related db base on domain name
-        const db = dbFunc(dbName, user, password, host, providerType);
-
         // exec logic
         try {
-            db.query(`SELECT * FROM ${prefix}.${ciName}`)
-                .then(response => {
-                    res.send(response[0]);
-                })
-
+            // connect related db base on domain name
+            const db = await dbFunc(dbName, user, password, host, providerType);
+            const response = await db.query(`SELECT * FROM ${prefix}.${ciName}`);
+            res.send(response[0]);
         }
         // error handler
         catch (error) {

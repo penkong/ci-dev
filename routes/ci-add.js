@@ -12,8 +12,7 @@ const dbFunc = require('../config/db/db-func');
 module.exports = app => {
 
     // add row to table
-
-    app.post('/ci-add', (req, res) => {
+    app.post('/ci-add', async(req, res) => {
         // get info from route
         const {
             id,
@@ -41,20 +40,15 @@ module.exports = app => {
             providerType
         } = domain;
 
-        // connect related db base on domain name
-        const db = dbFunc(dbName, user, password, host, providerType);
 
         // exec logic
         try {
-            // check for id
+            // connect related db base on domain name
+            const db = await dbFunc(dbName, user, password, host, providerType);
             // if id is acceptable add to db.
-            db
-                .query(
-                    `INSERT INTO ${prefix}.${ciName} ("id", "title") VALUES ('${id}', '${title}')`
-                )
-                .then(response => {
-                    res.send([{ id, title }]);
-                });
+            const response = await db
+                .query(`INSERT INTO ${prefix}.${ciName} ("id", "title") VALUES ('${id}', '${title}')`);
+            response ? res.send([{ id, title }]) : 'something wrong';
         }
         // error handler
         catch (error) {

@@ -22,9 +22,11 @@
         "body-parser": "^1.19.0",
         "config": "^3.2.2",
         "express": "^4.17.1",
+        "mongoose": "^5.7.0",
         "mysql2": "^1.7.0",
         "pg": "^7.12.1",
         "pg-hstore": "^2.3.3",
+        "redis": "^2.8.0",
         "sequelize": "^5.18.1",
         "tedious": "^6.3.0"
     },

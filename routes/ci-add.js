@@ -7,6 +7,7 @@
 // }
 const getConfig = require('../services/getConfig');
 const dbFunc = require('../db/db-func');
+const redisClient = require('../services/redisClient');
 
 module.exports = app => {
 
@@ -35,9 +36,25 @@ module.exports = app => {
         try {
             // connect related db base on domain name
             const db = await dbFunc(dbName, user, password, host, providerType);
+            const keyForRedis = JSON.stringify({
+                user: user,
+                ciName: ciName,
+                domainName: domainName,
+                providerType: providerType
+            });
+            const cachedVal = await redisClient.get(keyForRedis);
             // if id is acceptable add to db.
             const response = await db
                 .query(`INSERT INTO ${prefix}.${ciName} ("id", "title") VALUES ('${id}', '${title}')`);
+            if (cachedVal) {
+                const arr = JSON.parse(cachedVal);
+                arr.push({
+                    id: id,
+                    title: title
+                });
+                // console.log(arr);
+                redisClient.set(keyForRedis, JSON.stringify(arr));
+            }
             response ? res.send([{ id, title }]) : 'something wrong';
         } catch (error) {
             console.log(error);

@@ -6,6 +6,7 @@
 // }
 const getConfig = require('../services/getConfig');
 const dbFunc = require('../db/db-func');
+const redisClient = require('../services/redisClient');
 
 module.exports = app => {
 
@@ -30,10 +31,22 @@ module.exports = app => {
         } = getConfig(domainName);
         // exec logic
         try {
+            const keyForRedis = JSON.stringify({
+                user: user,
+                ciName: ciName,
+                domainName: domainName,
+                providerType: providerType
+            });
+            const cachedVal = await redisClient.get(keyForRedis);
             // connect related db base on domain name
             const db = await dbFunc(dbName, user, password, host, providerType);
             // if id is acceptable add to db.
             const response = await db.query(`DELETE FROM ${prefix}.${ciName} WHERE "id" = '${id}'`);
+            if (cachedVal) {
+                const arr = JSON.parse(cachedVal).filter(item => item.id !== id);
+                console.log(arr);
+                redisClient.set(keyForRedis, JSON.stringify(arr));
+            }
             response ? res.send(`Success.id ${id} deleted.`) : 'something wrong';
         } catch (error) {
             console.log(error);

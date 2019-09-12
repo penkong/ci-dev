@@ -15,7 +15,6 @@ module.exports = app => {
         const {
             prefix,
             dbName,
-
             user,
             password,
             host,

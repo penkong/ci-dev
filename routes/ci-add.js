@@ -8,6 +8,7 @@
 const getConfig = require('../services/getConfig');
 const dbFunc = require('../db/db-func');
 const redisClient = require('../services/redisClient');
+const redisHelper = require('../helpers/redisHelper');
 
 module.exports = app => {
 
@@ -36,13 +37,10 @@ module.exports = app => {
         try {
             // connect related db base on domain name
             const db = await dbFunc(dbName, user, password, host, providerType);
-            const keyForRedis = JSON.stringify({
-                user: user,
-                ciName: ciName,
-                domainName: domainName,
-                providerType: providerType
-            });
-            const cachedVal = await redisClient.get(keyForRedis);
+            const {
+                keyForRedis,
+                cachedVal
+            } = await redisHelper(user, ciName, domainName, providerType);
             // if id is acceptable add to db.
             const response = await db
                 .query(`INSERT INTO ${prefix}.${ciName} ("id", "title") VALUES ('${id}', '${title}')`);

@@ -1,4 +1,5 @@
-const redisClient = require('../services/redisClient');
+//-----------------------------------------------
+const redisClient = require('./redisClient');
 module.exports = async(user, ciName, domainName, providerType) => {
     const keyForRedis = JSON.stringify({
         user: user,

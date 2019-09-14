@@ -1,11 +1,11 @@
 // ------------- libs and modules ----------------------
-// const path = require('path');
+// 
 const bodyParser = require('body-parser');
 const express = require('express');
 
 
 // ------------- Postgresql connection ----------------
-const dbPg = require('./db/db-postgresql-Test');
+const dbPg = require('./test/conectionDataBaseTest/db-postgresql-Test');
 // // TEST Postresql connection
 dbPg.authenticate()
     .then(() => console.log('connected to postgres ...'))
@@ -13,7 +13,7 @@ dbPg.authenticate()
 
 
 // ------------- sql connection ----------------
-const dbSql = require('./db/db-sql-Test');
+const dbSql = require('./test/conectionDataBaseTest/db-sql-Test');
 // // TEST SQL connection
 dbSql.authenticate()
     .then(() => console.log('connected to sql ...'))
@@ -36,9 +36,6 @@ app.use(bodyParser.urlencoded({
 app.get('/', (req, res) => res.send('index from landing page'));
 // ci-routes
 require('./routes/ci')(app);
-require('./routes/ci-add')(app);
-require('./routes/ci-del')(app);
-require('./routes/ci-listAllCi')(app);
 
 // ---------------- Listen and exec -------------
 const PORT = process.env.PORT || 5000;

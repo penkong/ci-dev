@@ -5,7 +5,7 @@ const express = require('express');
 
 
 // ------------- Postgresql connection ----------------
-const dbPg = require('./test/conectionDataBaseTest/db-postgresql-Test');
+const dbPg = require('./test/DatabaseTestConnection/db-postgresql-Test');
 // // TEST Postresql connection
 dbPg.authenticate()
     .then(() => console.log('connected to postgres ...'))
@@ -13,7 +13,7 @@ dbPg.authenticate()
 
 
 // ------------- sql connection ----------------
-const dbSql = require('./test/conectionDataBaseTest/db-sql-Test');
+const dbSql = require('./test/DatabaseTestConnection/db-sql-Test');
 // // TEST SQL connection
 dbSql.authenticate()
     .then(() => console.log('connected to sql ...'))

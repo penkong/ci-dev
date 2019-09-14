@@ -1,0 +1,131 @@
+{
+	"info": {
+		"_postman_id": "08850e04-5966-4bd1-8303-b9aeeed003e5",
+		"name": "Ci_Lookup",
+		"description": "something",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ci",
+			"item": [
+				{
+					"name": "/delete",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n\t\"id\": 9,\r\n\t\"domainName\":\"water\",\r\n\t\"ciName\":\"ci_ac_input\"\r\n}"
+						},
+						"url": {
+							"raw": "{{server}}/ci/delete",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"ci",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/get",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n\t\"domainName\":\"water\",\r\n\t\"ciName\":\"ci_ac_input\"\r\n}"
+						},
+						"url": {
+							"raw": "{{server}}/ci/get",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"ci",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/addrow",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n\t\"id\": 9,\r\n\t\"title\": \"240 ولت، 15 آمپر، تکفاز\",\r\n\t\"domainName\":\"water\",\r\n\t\"ciName\":\"ci_ac_input\"\r\n}"
+						},
+						"url": {
+							"raw": "{{server}}/ci/addrow",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"ci",
+								"addrow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/getcilist",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n\t\"domainName\":\"water\"\r\n}"
+						},
+						"url": {
+							"raw": "{{server}}/ci/getcilist",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"ci",
+								"getcilist"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

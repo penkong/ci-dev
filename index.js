@@ -2,7 +2,7 @@
 // 
 const bodyParser = require('body-parser');
 const express = require('express');
-
+const cors = require('cors');
 
 // ------------- Postgresql connection ----------------
 const dbPg = require('./test/DatabaseTestConnection/db-postgresql-Test');
@@ -22,7 +22,7 @@ dbSql.authenticate()
 
 // ------------------ App Initialize ----------------
 const app = express();
-
+app.use(cors());
 
 //------------------ middleware -------------------
 // Body Parser = for form, to get data from

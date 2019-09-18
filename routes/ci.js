@@ -84,7 +84,7 @@ module.exports = app => {
 
                 if (cachedVal) return res.send(JSON.parse(cachedVal));
                 const response = await db.query(`SELECT * FROM ${prefix}.${ciName}`);
-                redisClient.setex(keyForRedis, 40000, JSON.stringify(response[0]));
+                redisClient.setex(keyForRedis, 600, JSON.stringify(response[0]));
                 res.send(JSON.parse(cachedVal) || response[0]);
             } catch (error) {
                 console.log(error);
@@ -118,15 +118,19 @@ module.exports = app => {
                 });
                 const cachedVal = await redisClient.get(keyForRedis);
                 if (cachedVal) return res.send(JSON.parse(cachedVal));
-                let arr = [];
-                const response = await db.query(`SELECT "table_name" FROM ${prefix}.GetCi`);
+                let arr;
+                const response = await db.query(`SELECT table_name, table_desc FROM ${prefix}.getci`);
+                // const response = await db.query(`SELECT table_name FROM ${prefix}.getci`);
+                console.log(response[0]);
                 const mapResult = response => {
                     for (let el of response[0]) {
-                        arr.push(el["table_name"]);
+                        // arr.push(el["table_name"]);
+                        // arr.push(el["table_desc"]);
                     }
                     return arr;
                 }
-                redisClient.setex(keyForRedis, 600, JSON.stringify(mapResult(response)));
+                arr = response[0];
+                redisClient.setex(keyForRedis, 10, JSON.stringify(mapResult(response)));
                 res.send(mapResult(response));
             } catch (error) {
                 console.log(error);

@@ -32,11 +32,31 @@ module.exports = app => {
             try {
                 // connect related db base on domain name
                 const db = await dbFunc(dbName, user, password, host, providerType);
+
+
                 const {
                     keyForRedis,
                     cachedVal
                 } = await redisHelper(user, ciName, domainName, providerType);
-                // if id is acceptable add to db.
+
+
+                // 
+                const existRow = await db.query(`SELECT id FROM ${prefix}.${ciName} WHERE id = ${id}`);
+                // if row exist update it
+                if (existRow[1].rowCount) {
+                    const updateTitle = await db.query(`UPDATE ${prefix}.${ciName} SET title='${title}' WHERE id = ${existRow[0][0].id}`);
+                    if (cachedVal) {
+                        const arr = JSON.parse(cachedVal);
+                        const findItemInRedis = arr.find(el => el.id === id)
+                        findItemInRedis.title = title;
+                        redisClient.set(keyForRedis, JSON.stringify(arr));
+                    }
+                    updateTitle
+                        ?
+                        res.send(`id ${existRow[0][0].id} updated`) :
+                        'something wrong';
+                }
+                // else
                 const response = await db
                     .query(`INSERT INTO ${prefix}.${ciName} ("id", "title") VALUES ('${id}', '${title}')`);
                 if (cachedVal) {
@@ -45,22 +65,23 @@ module.exports = app => {
                         id: id,
                         title: title
                     });
-                    // console.log(arr);
                     redisClient.set(keyForRedis, JSON.stringify(arr));
                 }
                 response ? res.send([{
                     id,
                     title
                 }]) : 'something wrong';
+
             } catch (error) {
                 console.log(error);
-                res.status(404).send('please use correct info')
+                res.status(404).send(error)
             };
         })
         //-----------------------------------------------------------------------
         // get a ci table
     app.post('/ci/get', async(req, res) => {
             // get info from route
+
             const {
                 domainName,
                 ciName
@@ -84,8 +105,9 @@ module.exports = app => {
 
                 if (cachedVal) return res.send(JSON.parse(cachedVal));
                 const response = await db.query(`SELECT * FROM ${prefix}.${ciName}`);
+                console.log(response[0]);
                 redisClient.setex(keyForRedis, 600, JSON.stringify(response[0]));
-                res.send(JSON.parse(cachedVal) || response[0]);
+                res.send(response[0]);
             } catch (error) {
                 console.log(error);
                 res.status(404).send('please use correct info')
@@ -130,7 +152,7 @@ module.exports = app => {
                     return arr;
                 }
                 arr = response[0];
-                redisClient.setex(keyForRedis, 10, JSON.stringify(mapResult(response)));
+                redisClient.setex(keyForRedis, 3, JSON.stringify(mapResult(response)));
                 res.send(mapResult(response));
             } catch (error) {
                 console.log(error);
